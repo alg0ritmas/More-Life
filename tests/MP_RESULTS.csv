@@ -1,0 +1,8 @@
+build,server_type,test,player_a,player_b,before_count,after_count,elapsed_seconds,result,notes
+,,same_container,,,,,,,
+,,different_containers,,,,,,,
+,,disconnect,,,,,,,
+,,full_destination,,,,,,,
+,,vanilla_race,,,,,,,
+,,reading_1x,,,,,,,
+,,reading_20x,,,,,,,

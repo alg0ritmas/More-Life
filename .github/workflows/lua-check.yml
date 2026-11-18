@@ -14,3 +14,5 @@ jobs:
       - run: lua5.1 tests/mock_test.lua
 
       - run: lua5.1 tests/mp_policy_test.lua
+      - run: lua5.1 tests/container_locks_test.lua
+      - run: lua5.1 tests/lock_service_test.lua

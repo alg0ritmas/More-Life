@@ -1,6 +1,6 @@
 # More Life roadmap
 
-Primary target: friends playing together on a Build 42 dedicated multiplayer server. Single-player is secondary. Current code remains single-player only until multiplayer gates pass.
+Primary target: friends playing together on a Build 42 dedicated multiplayer server. Single-player is secondary. Custom gameplay mutations remain single-player only; MP read-only policy is experimental.
 
 Goal: reduce repetitive input and waiting, without removing meaningful survival choices. Time savings are targets, not measured results.
 
@@ -14,7 +14,7 @@ Goal: reduce repetitive input and waiting, without removing meaningful survival 
 | v0.4 | Independent reading speed, meaningful XP and progression | Reading preference coded; page timing and progression pending |
 | v0.5 | Construction queues, cooking, farming, vehicle preparation | Planned |
 | v0.6 | Measured time savings and translations | Hook counter coded; actual measurements and translations pending |
-| v0.2.4 | Multiplayer-first architecture, server sandbox policy, command validation design | Highest priority; implementation pending |
+| v0.2.4 | Multiplayer-first architecture, server sandbox policy, command validation design | Read-only server/client policy coded; runtime pending |
 | v0.3-MP | Native synchronized reading and inventory integration; two-client tests | Planned; blocks multiplayer release |
 | v0.9 | Server-authoritative multiplayer, permission and compatibility testing | Required before public MP release |
 | v1.0 | Stable public Workshop release | Planned |

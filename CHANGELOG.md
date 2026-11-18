@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.2.4 — Multiplayer Foundation
+- Added read-only server startup report and client context menu for native MinutesPerPage.
+- Added policy tests and two-client test guide. No custom multiplayer mutations enabled.
+- Native server reading preferences remain authoritative; actual runtime unverified.
+
 ## v0.2.2 — development alpha
 - Extracted pure speed/profile rules and added Lua 5.1 unit tests and CI workflow (results not verified).
 - Added independent reading-speed preference, exact-type custom loot profile, clearing storage labels, selected-container match report and timing-hook counter.

@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.2.6 — MP batch core
+- Added deterministic category/capacity batch planner, protected item filter and deduplication.
+- Added guarded synchronous executor with source and target leases, validation, and release on adapter failure.
+- Added mock tests and multiplayer result sheet. Native adapter remains intentionally disconnected; no MP item mutations enabled.
+
+
 ## v0.2.5 — MP lock prototype
 - Added per-container leases and internal server lock service with canonical identity and authorization adapter requirements.
 - Added regression tests and CI wiring; execution not yet verified.

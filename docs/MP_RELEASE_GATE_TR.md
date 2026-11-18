@@ -1,0 +1,4 @@
+# Multiplayer test candidate — release gate
+Bu sürümde planlayıcı ve senkron transfer yürütücü çekirdeği vardır; native oyun adaptörü henüz bağlı değildir. Sunucu tarafı native transferin atomikliği, erişim, işlem sonucu, vanilla eşzamanlı hareket ve envanter senkronizasyonu doğrulanmadan etkinleştirilmez. Sandık kilidi yalnızca More Life işlemlerini kapsayacak şekilde tasarlanmıştır.
+Test sırası: iki oyuncu, aynı sandık; farklı sandık; dolu hedef; favori ekipman; bağlantı kesilmesi; iptal; yeniden bağlanma; vanilla transferle yarış; araç bagajı; sunucu yeniden başlatma; 1x/10x/15x/20x kitap ölçümü. Her testte toplam eşya adedi ve ağırlığı önce/sonra kaydedilmeli. Hata halinde test kaydı bırakılır, mod kapatılır.
+Native okuma ayarı için MP_TEST_TR.md. Diğer hız, XP, inşaat, yemek, tarım, araç otomasyonu ve aksiyon modları henüz MP oynanışına bağlı değildir.

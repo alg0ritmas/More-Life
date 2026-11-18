@@ -1,9 +1,11 @@
--- More Life 0.2.2 Full Alpha. No direct inventory mutations.
+-- More Life 0.2.3 Test Alpha. No direct inventory mutations.
 require "ISUI/ISInventoryPaneContextMenu"
 require "ISUI/ISInventoryPane"
 require "TimedActions/ISBaseTimedAction"
 local ML = { limit = 50 }
-local Rules = require "MoreLife/Rules"
+require "MoreLife/Rules"
+local Rules = MoreLifeRules
+if not Rules then print("[MoreLife] Rules missing; disabled"); return end
 local function log(s) print("[MoreLife] "..tostring(s)) end
 local function call(o,k,...)
     if not o then return nil end
@@ -16,7 +18,7 @@ local function tr(p,t,e,d)
 end
 local defaults={inventory=true,loot=true,learning=true,construction=true,living=true,vehicles=true,speed=2,readingSpeed=0,xp=1,profile="food",requested=0,storage={},custom={},timingCalls=0}
 local function data(p)
-    local md=p:getModData(); md.MoreLife=md.MoreLife or {}; local d=md.MoreLife
+    local md=p:getModData(); if type(md.MoreLife)~="table" then md.MoreLife={} end; local d=md.MoreLife
     for k,v in pairs(defaults) do if d[k]==nil then d[k]=type(v)=="table" and {} or v end end
     d.speed=Rules.speed(d.speed,2); d.readingSpeed=Rules.reading(d.readingSpeed); d.xp=Rules.xp(d.xp)
     if type(d.storage)~="table" then d.storage={} end
@@ -58,12 +60,17 @@ local function eligible(p,c,s,mode,profile)
 end
 local function transfer(p,n,src,dst,s,mode,profile)
     if online() then say(p,"More Life: multiplayer transfer disabled in alpha"); return end
+    if not p or call(p,"isDead") or call(p,"isAsleep") then return end
     local own=p:getInventory(); local active=loot(n)
     if p:getVehicle() or not safeContainer(active) or not ((src==own and dst==active) or (src==active and dst==own)) then return end
     if s and s:getContainer()~=src then return end
     local batch=eligible(p,src,s,mode,profile); if #batch==0 then return end
     local f=ISInventoryPaneContextMenu.onMoveItemsTo
     if type(f)~="function" then say(p,"Native transfer unavailable"); return end
+    local guard=ISInventoryPaneContextMenu.hasRoomForAny
+    if type(guard)~="function" then say(p,"More Life: capacity check unavailable"); return end
+    local checked,room=pcall(guard,p,dst,batch)
+    if not checked or not room then say(p,"More Life: no verified capacity"); return end
     local ok,err=pcall(f,batch,dst,n)
     if ok then data(p).requested=data(p).requested+#batch; say(p,"More Life: "..#batch.." requested (not confirmed)") else log(err) end
 end
@@ -135,9 +142,10 @@ end
 local actionGroups={ISInventoryTransferAction="inventory",ISTransferAction="inventory",ISReadABook="learning",ISBuildAction="construction",ISHandcraftAction="construction",ISWashClothing="living",ISWashYourself="living",ISFillWaterAction="living",ISCraftAction="construction",ISInstallVehiclePart="vehicles",ISUninstallVehiclePart="vehicles",ISRepairEngine="vehicles",ISSiphonFuel="vehicles",ISAddGasolineToVehicle="vehicles"}
 local function danger(p)
     -- Conservative: if visibility API unavailable, don't accelerate.
-    local z=call(p,"getStats"); local nearby=call(p,"getSpottedList")
-    if not nearby or not z then return true end
-    for i=0,nearby:size()-1 do if instanceof(nearby:get(i),"IsoZombie") then return true end end
+    local nearby=call(p,"getSpottedList")
+    local size=call(nearby,"size")
+    if type(size)~="number" then return true end
+    for i=0,size-1 do local obj=call(nearby,"get",i); if not obj or instanceof(obj,"IsoZombie") then return true end end
     return false
 end
 local old=ISBaseTimedAction.adjustMaxTime
@@ -165,4 +173,4 @@ end
 Events.OnFillInventoryObjectContextMenu.Add(menu)
 Events.OnFillWorldObjectContextMenu.Add(world)
 if Events.AddXP then Events.AddXP.Add(xp) end
-log("Full Alpha 0.2.2 loaded; single-player only")
+log("Test Alpha 0.2.3 loaded; single-player only")

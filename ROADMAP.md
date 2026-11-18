@@ -23,3 +23,8 @@ Goal: reduce repetitive input and waiting, without removing meaningful survival 
 
 ## Acceptance gates
 No item loss/duplication; native capacity and access constraints; protected gear; no intentional combat acceleration; no silent multiplayer mutations; documented supported game build; reproducible timing benchmarks. Public multiplayer alpha only after dedicated-server and two-client smoke tests. Never remove the current MP guard until the relevant server integration is verified. No release date committed.
+
+## Reading UI enhancement
+- Show total, read and remaining pages, progress percentage and estimated remaining reading time on skill-book information UI when supported by the installed Build 42 API.
+- Estimate must account for server reading settings, day length and character modifiers where available; otherwise label estimate unavailable. No fabricated page counts for magazines.
+- Real test feedback (Build 42.22.2, v0.2.6 local SP): mod and settings menu visible, user reports faster reading and timing-hook counter 24–27. Exact speed and page progress not yet measured.

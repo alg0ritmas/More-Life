@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.2.5 — MP lock prototype
+- Added per-container leases and internal server lock service with canonical identity and authorization adapter requirements.
+- Added regression tests and CI wiring; execution not yet verified.
+- No live transfer integration or multiplayer mutation enabled.
+
+
 ## v0.2.4 — Multiplayer Foundation
 - Added read-only server startup report and client context menu for native MinutesPerPage.
 - Added policy tests and two-client test guide. No custom multiplayer mutations enabled.

@@ -1,5 +1,6 @@
 -- Pure rules; runnable without Project Zomboid.
 local R={}
+MoreLifeRules=R
 R.speeds={1,1.5,2,3,5,10,15,20}
 local function allowed(v,choices,fallback)
     v=tonumber(v)

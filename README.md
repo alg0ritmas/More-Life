@@ -1,6 +1,6 @@
 # More Life — Less Waiting, More Playing
 
-Experimental quality-of-life mod suite for Project Zomboid Build 42. Version **0.2.2 development Alpha**. Primary product target: dedicated multiplayer servers with friends. Current implementation is single-player only; do not deploy on multiplayer yet. No dependencies intended.
+Experimental quality-of-life mod suite for Project Zomboid Build 42. Version **0.2.4 Multiplayer Foundation**. Primary product target: dedicated multiplayer servers with friends. MP read-only settings reporting added; custom gameplay changes remain SP-only. Use a disposable test server, not production. No dependencies intended.
 
 ## Features
 - ML-001 Smart Inventory: selected-container batch transfers and category labels.
@@ -13,7 +13,7 @@ Experimental quality-of-life mod suite for Project Zomboid Build 42. Version **0
 Routine speed choices: 1x, 1.5x, 2x, 3x, 5x, 10x, 15x, 20x (default 2x). XP: 1x, 1.5x, 2x (default 1x). Combat is not intentionally accelerated.
 
 ## Status
-Alpha, not verified in the game. The original package passed a Lua 5.4 parser check, not a Kahlua/runtime test. Incompatible actions may retain native timing. Multiplayer disabled. Menus are English. Use a disposable save.
+Alpha, not verified in the game. The original package passed a Lua 5.4 parser check, not a Kahlua/runtime test. Incompatible actions may retain native timing. Multiplayer gameplay modifications disabled. See [MP test guide](docs/MP_TEST_TR.md). Menus are English. Use a disposable save.
  
 ## Repository
 The canonical Lua source and mod metadata live under Workshop/MoreLife/Contents/mods/MoreLife/42/. The client integration shares one file; pure rules are now separated. Independent reading speed, custom exact-item loot profiles, selected-container match reports and timing-hook counters are experimental additions. The original release kit contains poster.png, preview.png and a duplicate local-install copy; use that kit for installation until binary assets and full packaging are uploaded here.

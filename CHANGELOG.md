@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.2.2 — development alpha
+- Extracted pure speed/profile rules and added Lua 5.1 unit tests and CI workflow (results not verified).
+- Added independent reading-speed preference, exact-type custom loot profile, clearing storage labels, selected-container match report and timing-hook counter.
+- Normalized persisted numeric settings. Runtime behavior remains unverified; no public release yet.
+
 ## v0.2.1 — Alpha
 - Added 10x, 15x and 20x routine speed choices; capped timing multiplier at 20.
 - Kept default speed 2x and independent XP settings.

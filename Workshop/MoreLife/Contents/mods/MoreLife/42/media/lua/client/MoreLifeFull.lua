@@ -1,8 +1,9 @@
--- More Life 0.2.1 Full Alpha. No direct inventory mutations.
+-- More Life 0.2.2 Full Alpha. No direct inventory mutations.
 require "ISUI/ISInventoryPaneContextMenu"
 require "ISUI/ISInventoryPane"
 require "TimedActions/ISBaseTimedAction"
 local ML = { limit = 50 }
+local Rules = require "MoreLife/Rules"
 local function log(s) print("[MoreLife] "..tostring(s)) end
 local function call(o,k,...)
     if not o then return nil end
@@ -13,10 +14,14 @@ local function tr(p,t,e,d)
     local lang=tostring(call(getCore(),"getOptionLanguage"))
     if lang=="TR" then return t elseif lang=="DE" then return d else return e end
 end
-local defaults={inventory=true,loot=true,learning=true,construction=true,living=true,vehicles=true,speed=2,xp=1,profile="food",requested=0,storage={}}
+local defaults={inventory=true,loot=true,learning=true,construction=true,living=true,vehicles=true,speed=2,readingSpeed=0,xp=1,profile="food",requested=0,storage={},custom={},timingCalls=0}
 local function data(p)
     local md=p:getModData(); md.MoreLife=md.MoreLife or {}; local d=md.MoreLife
     for k,v in pairs(defaults) do if d[k]==nil then d[k]=type(v)=="table" and {} or v end end
+    d.speed=Rules.speed(d.speed,2); d.readingSpeed=Rules.reading(d.readingSpeed); d.xp=Rules.xp(d.xp)
+    if type(d.storage)~="table" then d.storage={} end
+    if type(d.custom)~="table" then d.custom={} end
+    d.requested=Rules.count(d.requested); d.timingCalls=Rules.count(d.timingCalls)
     return d
 end
 local function say(p,s) if p then p:Say(tostring(s)) end; log(s) end
@@ -27,8 +32,9 @@ end
 local function cat(i) return tostring(call(i,"getCategory") or ""):lower() end
 local function typ(i) return tostring(call(i,"getFullType") or ""):lower() end
 local profiles={food={"food","water","drink"},medical={"medical","bandage","pill","disinfect"},combat={"weapon","ammo","bullet","magazine"},building={"plank","nails","hammer","saw","screw","wood","metal"},books={"literature","book","magazine","skill"}}
-local function matches(i,profile)
-    local s=cat(i).." "..typ(i); for _,v in ipairs(profiles[profile] or {}) do if string.find(s,v,1,true) then return true end end; return false
+local function matches(i,profile,p)
+    if profile=="custom" then return p and data(p).custom[typ(i)]==true end
+    return Rules.matches(cat(i).." "..typ(i), profiles[profile])
 end
 local function loot(n) local page=getPlayerLoot(n); return page and page.inventoryPane and page.inventoryPane.inventory end
 local function safeContainer(c)
@@ -45,7 +51,7 @@ local function items(c)
 end
 local function eligible(p,c,s,mode,profile)
     local out={}; for _,i in ipairs(items(c)) do
-        if not protected(p,i) and (mode=="all" or (mode=="type" and s and typ(i)==typ(s)) or (mode=="category" and s and cat(i)==cat(s)) or (mode=="profile" and matches(i,profile))) then
+        if not protected(p,i) and (mode=="all" or (mode=="type" and s and typ(i)==typ(s)) or (mode=="category" and s and cat(i)==cat(s)) or (mode=="profile" and matches(i,profile,p))) then
             out[#out+1]=i; if #out>=ML.limit then break end
         end
     end; return out
@@ -62,7 +68,10 @@ local function transfer(p,n,src,dst,s,mode,profile)
     if ok then data(p).requested=data(p).requested+#batch; say(p,"More Life: "..#batch.." requested (not confirmed)") else log(err) end
 end
 local function choose(p,k,v) data(p)[k]=v; say(p,k..": "..tostring(v)) end
-local function mark(p,c,profile) local k=key(c); if k then data(p).storage[k]=profile; say(p,"Storage: "..profile) end end
+local function mark(p,c,profile) local k=key(c); if k then data(p).storage[k]=profile; say(p,"Storage: "..tostring(profile or "none")) end end
+local function toggleCustom(p,i) local d=data(p); local k=typ(i); if k=="" then return end; if d.custom[k] then d.custom[k]=nil elseif Rules.size(d.custom)<100 then d.custom[k]=true end; say(p,"Custom types: "..Rules.size(d.custom)) end
+local function clearCustom(p) data(p).custom={}; say(p,"Custom profile cleared") end
+local function listMatches(p,c,profile) local counts={}; for _,i in ipairs(items(c)) do if matches(i,profile,p) then local k=typ(i); counts[k]=(counts[k] or 0)+1 end end; local rows={}; for k,v in pairs(counts) do rows[#rows+1]=k..": "..v end; table.sort(rows); log("Selected container matches: "..table.concat(rows,", ")); say(p,"Matching types: "..#rows.." (console)") end
 local function sub(ctx,name) local opt=ctx:addOption(name,nil,nil); local s=ctx:getNew(ctx); ctx:addSubMenu(opt,s); return s end
 local function menu(n,ctx,selection)
     local p=getSpecificPlayer(n); if not p or online() then return end
@@ -82,12 +91,16 @@ local function menu(n,ctx,selection)
         local k=key(c)
         if d.inventory and k then
             local sm=sub(root,"Storage category")
-            for _,pr in ipairs({"food","medical","combat","building","books"}) do sm:addOption(pr,p,mark,c,pr) end
+            for _,pr in ipairs({"food","medical","combat","building","books","custom"}) do sm:addOption(pr,p,mark,c,pr) end
+            sm:addOption("Clear category",p,mark,c,nil)
             if d.storage[k] then root:addOption("Deposit matching: "..d.storage[k],p,transfer,n,own,c,nil,"profile",d.storage[k]) end
         end
     end
+    root:addOption("Toggle selected type in custom profile",p,toggleCustom,sample)
+    root:addOption("Clear custom profile",p,clearCustom)
+    if safeContainer(c) then root:addOption("Inspect matching loot (console)",p,listMatches,c,d.profile) end
     local pm=sub(root,"Choose loot profile")
-    for _,pr in ipairs({"food","medical","combat","building","books"}) do pm:addOption(pr,p,choose,"profile",pr) end
+    for _,pr in ipairs({"food","medical","combat","building","books","custom"}) do pm:addOption(pr,p,choose,"profile",pr) end
     root:addOption("Requested transfers: "..d.requested,p,say,"Requested transfers: "..d.requested)
 end
 local function report(p)
@@ -109,6 +122,10 @@ local function world(n,ctx,objects,test)
     for _,k in ipairs({"inventory","loot","learning","construction","living","vehicles"}) do root:addOption(k..": "..(d[k] and "ON" or "OFF"),p,choose,k,not d[k]) end
     local speeds=sub(root,"Routine speed: "..d.speed.."x")
     for _,v in ipairs({1,1.5,2,3,5,10,15,20}) do speeds:addOption(v.."x",p,choose,"speed",v) end
+    local read=sub(root,"Reading speed: "..(d.readingSpeed==0 and "Follow routine" or d.readingSpeed.."x"))
+    read:addOption("Follow routine",p,choose,"readingSpeed",0)
+    for _,v in ipairs(Rules.speeds) do read:addOption(v.."x",p,choose,"readingSpeed",v) end
+    root:addOption("Timing calls accelerated: "..d.timingCalls,p,say,"Timing calls accelerated: "..d.timingCalls)
     local xp=sub(root,"Practice bonus: "..d.xp.."x")
     for _,v in ipairs({1,1.5,2}) do xp:addOption(v.."x",p,choose,"xp",v) end
     if d.construction then root:addOption("Building supplies checklist",p,checklist) end
@@ -129,7 +146,10 @@ if type(old)=="function" then
         local native=old(self,t,...); local p=self.character; local group=actionGroups[self.Type]
         if online() or not group or not p or type(native)~="number" or native<=1 or danger(p) then return native end
         local d=data(p); if not d[group] then return native end
-        return math.max(1,math.ceil(native/math.max(1,math.min(20,tonumber(d.speed) or 1))))
+        local speed=group=="learning" and d.readingSpeed~=0 and d.readingSpeed or d.speed
+        local duration=Rules.duration(native,speed)
+        if duration<native then d.timingCalls=d.timingCalls+1 end
+        return duration
     end
 else log("Timing hook absent; native timings retained") end
 -- Extra XP is optional, single-player, guarded against recursive AddXP events.
@@ -145,4 +165,4 @@ end
 Events.OnFillInventoryObjectContextMenu.Add(menu)
 Events.OnFillWorldObjectContextMenu.Add(world)
 if Events.AddXP then Events.AddXP.Add(xp) end
-log("Full Alpha 0.2.1 loaded; single-player only")
+log("Full Alpha 0.2.2 loaded; single-player only")

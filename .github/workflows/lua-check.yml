@@ -12,3 +12,5 @@ jobs:
       - run: lua5.1 tests/rules_test.lua
 
       - run: lua5.1 tests/mock_test.lua
+
+      - run: lua5.1 tests/mp_policy_test.lua

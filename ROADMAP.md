@@ -28,3 +28,10 @@ No item loss/duplication; native capacity and access constraints; protected gear
 - Show total, read and remaining pages, progress percentage and estimated remaining reading time on skill-book information UI when supported by the installed Build 42 API.
 - Estimate must account for server reading settings, day length and character modifiers where available; otherwise label estimate unavailable. No fabricated page counts for magazines.
 - Real test feedback (Build 42.22.2, v0.2.6 local SP): mod and settings menu visible, user reports faster reading and timing-hook counter 24–27. Exact speed and page progress not yet measured.
+
+## Smart Loot 2.0 — user-approved modes
+- Selected: collect matching items from the selected container only (default).
+- Nearby: one explicit command across accessible nearby containers, using native reach and capacity checks.
+- Auto: opt-in collection while moving past accessible containers; off by default, easy stop, suspend during danger or combat, no repeated full scans.
+- Per-player mode and multi-category profile selection; server controls allowed modes and limits. Respect favorites, equipment, private/shared storage permissions, container locks and capacity. No through-wall or remote looting. Native transfer integration and multiplayer tests required before enabling Nearby/Auto.
+- Build 42.22.2 SP feedback: selected-container food loot works; adjacent containers require repeated manual command. Favorite protection and bidirectional batch transfer observed.

@@ -15,6 +15,7 @@ Goal: reduce repetitive input and waiting, without removing meaningful survival 
 | v0.5 | Construction queues, cooking, farming, vehicle preparation | Planned |
 | v0.6 | Measured time savings and translations | Hook counter coded; actual measurements and translations pending |
 | v0.2.4 | Multiplayer-first architecture, server sandbox policy, command validation design | Read-only server/client policy coded; runtime pending |
+| v0.2.5 | Per-container lock and internal server service | Prototype coded; adapter and runtime pending |
 | v0.3-MP | Native synchronized reading and inventory integration; two-client tests | Planned; blocks multiplayer release |
 | v0.9 | Server-authoritative multiplayer, permission and compatibility testing | Required before public MP release |
 | v1.0 | Stable public Workshop release | Planned |

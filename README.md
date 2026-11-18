@@ -1,6 +1,6 @@
 # More Life — Less Waiting, More Playing
 
-Experimental quality-of-life mod suite for Project Zomboid Build 42. Version **0.2.2 development Alpha**. Single-player only. No dependencies intended.
+Experimental quality-of-life mod suite for Project Zomboid Build 42. Version **0.2.2 development Alpha**. Primary product target: dedicated multiplayer servers with friends. Current implementation is single-player only; do not deploy on multiplayer yet. No dependencies intended.
 
 ## Features
 - ML-001 Smart Inventory: selected-container batch transfers and category labels.

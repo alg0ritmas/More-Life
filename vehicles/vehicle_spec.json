@@ -2,7 +2,7 @@
   "mod_id": "MoreLifeVehicles",
   "vehicle_id": "MoreLifeVehicles.ArmoredScout",
   "name": "MLV Armored Scout 4x4",
-  "status": "concept-mesh-and-systems-scaffold",
+  "status": "asset-compiled-not-playable",
   "build_target": "42.22.2",
   "seats": 4,
   "wheels": 4,
@@ -26,5 +26,7 @@
     "vehicle script",
     "spawn rules",
     "animation"
-  ]
+  ],
+  "compiled_mesh": "media/models_X/vehicles/MLV_ArmoredScout.glb",
+  "texture": "media/textures/Vehicles/vehicle_mlv_armoredscout.png"
 }

@@ -30,7 +30,9 @@ def find_donor(root,preferred):
         for module,name,script in sections(path.read_text(encoding='utf-8',errors='replace')):
             found[(module.lower(),name.lower())]=(path,module,name,script)
     for name in preferred:
-        if ('base',name.lower()) in found:return found['base',name.lower()]
+        if ('base',name.lower()) in found:
+            candidate=found['base',name.lower()]
+            if re.search(r'\bseats\s*=\s*4\s*,',strip_comments(candidate[3])):return candidate
     raise ValueError('No preferred donor in installed vanilla script list')
 def transform(source):
     source,n=re.subn(r'\bvehicle\s+[A-Za-z0-9_]+\s*\{','vehicle MLVArmoredScout\n{',source,count=1)

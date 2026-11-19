@@ -21,3 +21,6 @@ A Windows script (`BUILD_VEHICLE_TEST.cmd`) now extracts a stock vehicle definit
 
 ## v0.3 candidate generator
 `tools/prepare_drivable_candidate.py` reads an SUV/OffRoad/Pickup vehicle definition from the user's local Build 42 game installation, requires four passengers, and produces a new namespaced experimental vehicle script pointing to the MLV model. It preserves the native base parts as a testing scaffold. It does not modify game files or prove the vehicle works. **Do not redistribute generated vanilla-derived scripts**; use only locally for game development tests. Windows helper: `BUILD_CANDIDATE_WINDOWS.cmd`. See [test guide](docs/VEHICLE_TEST_TR.md).
+
+## v0.4 — first playable-candidate test gate
+The ZIP `MoreLifeVehicles-ArmoredScout-v0.4-Playtest-Candidate.zip` includes a generated-from-local-vanilla, four-seat vehicle candidate (generator + installer) and optional very-rare military/army world-zone registration. First test intentionally retains native donor model and skins, isolating driving/seat verification from untested GLB rendering. Offline tests passed; gameplay and MP unverified. Run `BUILD_AND_INSTALL_TEST.cmd` and follow `docs/PLAYTEST_TR.md`. Do not deploy to a production server or redistribute generated native game scripts.

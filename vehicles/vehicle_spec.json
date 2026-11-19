@@ -2,7 +2,7 @@
   "mod_id": "MoreLifeVehicles",
   "vehicle_id": "MoreLifeVehicles.ArmoredScout",
   "name": "MLV Armored Scout 4x4",
-  "status": "asset-compiled-not-playable",
+  "status": "native-script-generator-ready-runtime-unverified",
   "build_target": "42.22.2",
   "seats": 4,
   "wheels": 4,
@@ -20,13 +20,16 @@
     "deployment_gate": "two_client_dedicated_test"
   },
   "missing": [
-    "B42 compatible model export",
-    "UV map",
-    "textures",
-    "vehicle script",
-    "spawn rules",
-    "animation"
+    "verified_native_game_vehicle_reference",
+    "game_compatible_physics_tuning",
+    "separate_wheel_animations",
+    "offline_debug_spawn_test",
+    "dedicated_two_client_test",
+    "license_safe_independent_vehicle_definition",
+    "world_spawn_rules"
   ],
   "compiled_mesh": "media/models_X/vehicles/MLV_ArmoredScout.glb",
-  "texture": "media/textures/Vehicles/vehicle_mlv_armoredscout.png"
+  "texture": "media/textures/Vehicles/vehicle_mlv_armoredscout.png",
+  "generator": "tools/prepare_drivable_candidate.py",
+  "generator_execution": "runs locally against owned installed vanilla scripts"
 }

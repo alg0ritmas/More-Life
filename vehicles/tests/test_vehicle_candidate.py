@@ -21,14 +21,18 @@ class Tests(unittest.TestCase):
  def test_count(self): self.assertEqual(seats(vehicles(FIXTURE)["SUV"]),4)
  def test_rewrite(self):
   code,n=rewrite(vehicles(FIXTURE)["SUV"])
-  self.assertIn("MoreLifeVehicles.MLV_ArmoredScout",code)
-  self.assertIn("vehicle_mlv_armoredscout",code)
+  self.assertIn("Base.Vehicles_SUV",code)
+  self.assertIn("vehicle_suv",code)
   self.assertIn("passenger RearRight",code)
+  self.assertEqual(n,0)
+ def test_custom_model_opt_in(self):
+  code,n=rewrite(vehicles(FIXTURE)["SUV"],custom_model=True)
+  self.assertIn("MoreLifeVehicles.MLV_ArmoredScout",code)
   self.assertEqual(n,1)
  def test_no_model(self):
   with self.assertRaises(ValueError):rewrite("{ mass = 5, }")
  def test_no_file(self):
-  with self.assertRaises(ValueError):rewrite("{ model { scale = 1.82, } }")
+  with self.assertRaises(ValueError):rewrite("{ model { scale = 1.82, } }",custom_model=True)
  def test_build_and_reject_two_seats(self):
   with tempfile.TemporaryDirectory() as d:
    source=Path(d)/"vehicles_suv.txt";source.write_text(FIXTURE)

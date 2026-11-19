@@ -6,3 +6,5 @@
 - v0.5 — native multiplayer sync and 2-client dedicated testing: pending.
 - v1.0 — independent Steam Workshop vehicle release: pending.
 - Later: Tank prototype, then helicopter flight after engine feasibility proof.
+
+- v0.4 Playtest candidate: native visual fallback, rare military spawn registration, install script, debug checklist. Code ready; **first in-game drive, save/load, 4 seats and MP remain pending user test**.

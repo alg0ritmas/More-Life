@@ -15,3 +15,6 @@ The development ZIP contains `assets/source/MLV_ArmoredScout.obj`, `tools/blende
 
 ## Asset milestone v0.2
 Reproducible GLB and diffuse atlas builder: `python vehicles/tools/build_assets.py`; static model has 332 triangles and a 512x512 atlas. Validator: `python vehicles/tests/validate_assets.py`. The downloadable ZIP shared in ChatGPT includes generated binary assets; GitHub stores the reproducible generator and source OBJ. Not yet a drivable car.
+
+## v0.3 vehicle candidate generator
+A Windows script (`BUILD_VEHICLE_TEST.cmd`) now extracts a stock vehicle definition from the user's own B42 installation, preserving physics, wheel and seat definitions while changing the vehicle ID and body mesh reference. The GitHub version includes the converter and fixture tests, not proprietary game data. It does not auto-spawn and has not passed any in-game test. See `docs/DRIVABLE_CANDIDATE_TR.md`.

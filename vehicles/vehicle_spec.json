@@ -1,0 +1,30 @@
+{
+  "mod_id": "MoreLifeVehicles",
+  "vehicle_id": "MoreLifeVehicles.ArmoredScout",
+  "name": "MLV Armored Scout 4x4",
+  "status": "concept-mesh-and-systems-scaffold",
+  "build_target": "42.22.2",
+  "seats": 4,
+  "wheels": 4,
+  "design": {
+    "cargo_capacity_target": 110,
+    "rarity": "very_rare",
+    "spawn_context": "military_checkpoints",
+    "fuel_type": "gasoline",
+    "weapons_enabled": false,
+    "armor": "moderate"
+  },
+  "multiplayer": {
+    "server_authoritative": true,
+    "client_spawn_commands": false,
+    "deployment_gate": "two_client_dedicated_test"
+  },
+  "missing": [
+    "B42 compatible model export",
+    "UV map",
+    "textures",
+    "vehicle script",
+    "spawn rules",
+    "animation"
+  ]
+}

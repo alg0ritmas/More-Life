@@ -48,16 +48,17 @@ def seats(body):
 def field(data,name,value):
     pattern=r"(?m)^(\s*"+re.escape(name)+r"\s*=\s*)([^,\r\n]+)"
     return re.subn(pattern,lambda m:m.group(1)+value,data,count=1)
-def rewrite(body):
+def rewrite(body, custom_model=False):
     clean=mask_comments(body)
     match=re.search(r"\bmodel\s*(?:[A-Za-z0-9_]+)?\s*\{",clean)
     if not match: raise ValueError("Reference has no model block")
     start=clean.find("{",match.start()); old,end=block(body,start)
-    new,count=field(old,"file",MODULE+".MLV_ArmoredScout")
-    if count!=1: raise ValueError("Model block lacks file=")
-    body=body[:start]+new+body[end:]
+    if custom_model:
+        new,count=field(old,"file",MODULE+".MLV_ArmoredScout")
+        if count!=1: raise ValueError("Model block lacks file=")
+        body=body[:start]+new+body[end:]
     replacements=0
-    for match in list(re.finditer(r"\bskin\s*\{",mask_comments(body)))[::-1]:
+    for match in (list(re.finditer(r"\bskin\s*\{",mask_comments(body)))[::-1] if custom_model else []):
         start=mask_comments(body).find("{",match.start())
         old,end=block(body,start)
         new,count=field(old,"texture","Vehicles/vehicle_mlv_armoredscout")
@@ -65,15 +66,15 @@ def rewrite(body):
             replacements+=1;body=body[:start]+new+body[end:]
     script="module MoreLifeVehicles\n{\n    imports\n    {\n        Base\n    }\n    vehicle ArmoredScout\n    "+body+"\n}\n"
     return script,replacements
-def build(source,vehicle,out):
+def build(source,vehicle,out,custom_model=False):
     definitions=vehicles(source.read_text(encoding="utf-8-sig",errors="replace"))
     if vehicle not in definitions:raise ValueError("Vehicle not found: "+vehicle)
     body=definitions[vehicle]
     if seats(body)!=4:raise ValueError("%d passenger definitions; expected four"%seats(body))
-    script,skins=rewrite(body)
+    script,skins=rewrite(body,custom_model=custom_model)
     out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text(script,encoding="utf-8")
-    result={"native_reference":source.name,"native_vehicle":vehicle,"seats":4,"skins_patched":skins,"mod_id":"MoreLifeVehicles","vehicle_id":"MoreLifeVehicles.ArmoredScout","status":"NOT_GAME_TESTED"}
+    result={"native_reference":source.name,"native_vehicle":vehicle,"seats":4,"skins_patched":skins,"mod_id":"MoreLifeVehicles","vehicle_id":"MoreLifeVehicles.ArmoredScout","custom_model":custom_model,"status":"NOT_GAME_TESTED"}
     out.with_suffix(".json").write_text(json.dumps(result,indent=2),encoding="utf-8")
     return result
 def main():
@@ -82,6 +83,7 @@ def main():
     p.add_argument("--source",type=Path)
     p.add_argument("--vehicle")
     p.add_argument("--out",type=Path,default=Path(__file__).resolve().parents[1]/"Workshop/MoreLifeVehicles/Contents/mods/MoreLifeVehicles/42/media/scripts/vehicles/mlv_armoredscout_vehicle.txt")
+    p.add_argument("--experimental-custom-model",action="store_true",help="Enable the unverified custom body")
     a=p.parse_args(); game=(a.game/"media/scripts").resolve()
     if not game.is_dir():p.error("Game media/scripts not found")
     if a.source:
@@ -102,6 +104,6 @@ def main():
         if not candidates:p.error("No compatible four-seat vanilla reference")
         candidates.sort(key=lambda x:(not "suv" in x[1].lower(),x[1]))
         source,name=next(((src,n) for src,n in candidates if n==a.vehicle),candidates[0]) if a.vehicle else candidates[0]
-    print(json.dumps(build(source,name,a.out),indent=2))
+    print(json.dumps(build(source,name,a.out,custom_model=a.experimental_custom_model),indent=2))
     print("Generated locally, not tested in Project Zomboid. Do not use on live multiplayer server.")
 if __name__=="__main__":main()

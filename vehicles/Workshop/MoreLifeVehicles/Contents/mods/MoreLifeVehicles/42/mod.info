@@ -1,4 +1,5 @@
-name=More Life Vehicles - Armored Scout Dev Preview
+name=More Life Vehicles - Armored Scout (Test Candidate)
 id=MoreLifeVehicles
-description=Experimental four-seat armored scout project. Contains development scaffold only; no drivable vehicle yet. Not intended for multiplayer production.
+description=Build 42 experimental 4-seat driving test candidate. Generate local native script before installing. Multiplayer unverified.
+poster=poster.png
 versionMin=42.0

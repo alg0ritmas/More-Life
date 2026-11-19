@@ -4,7 +4,7 @@ root=Path(__file__).resolve().parents[1]
 spec=json.loads((root/'vehicle_spec.json').read_text())
 assert spec['mod_id']=='MoreLifeVehicles'
 assert spec['seats']==4 and spec['wheels']==4
-assert spec['status']=='concept-mesh-and-systems-scaffold'
+assert spec['status']=='asset-compiled-not-playable'
 mesh=(root/'assets/source/MLV_ArmoredScout.obj').read_text().splitlines()
 v=[line for line in mesh if line.startswith('v ')]
 f=[line for line in mesh if line.startswith('f ')]

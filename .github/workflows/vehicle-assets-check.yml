@@ -1,0 +1,20 @@
+name: Vehicle asset structure
+on:
+  push:
+    paths:
+      - 'vehicles/**'
+      - '.github/workflows/vehicle-assets-check.yml'
+  pull_request:
+    paths:
+      - 'vehicles/**'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python vehicles/tests/validate.py

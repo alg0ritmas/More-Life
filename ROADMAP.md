@@ -35,3 +35,8 @@ No item loss/duplication; native capacity and access constraints; protected gear
 - Auto: opt-in collection while moving past accessible containers; off by default, easy stop, suspend during danger or combat, no repeated full scans.
 - Per-player mode and multi-category profile selection; server controls allowed modes and limits. Respect favorites, equipment, private/shared storage permissions, container locks and capacity. No through-wall or remote looting. Native transfer integration and multiplayer tests required before enabling Nearby/Auto.
 - Build 42.22.2 SP feedback: selected-container food loot works; adjacent containers require repeated manual command. Favorite protection and bidirectional batch transfer observed.
+
+## More Life Vehicles (separate mod)
+- Armored Scout v0.3: original model/texture and local vanilla-derived vehicle script **candidate generator** ready; standalone artifact and tests produced; game import and drive tests outstanding.
+- Keep distinct `MoreLifeVehicles` mod ID. No tank or helicopter gameplay until 4x4 physics and multiplayer validation.
+- [Vehicle roadmap](vehicles/ROADMAP.md) and [local B42 candidate guide](vehicles/docs/VEHICLE_TEST_TR.md).
